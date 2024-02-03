@@ -1,0 +1,30 @@
+{
+  "name": "pka-blockchain-challenge3",
+  "version": "1.0.0",
+  "description": "Script to interact with binance smart chain",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niket-yende/pka-blockchain-challenge3.git"
+  },
+  "keywords": [
+    "blockchian",
+    "node.js",
+    "binance",
+    "bsc",
+    "web3"
+  ],
+  "author": "Niket Yende (niket6@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/niket-yende/pka-blockchain-challenge3/issues"
+  },
+  "homepage": "https://github.com/niket-yende/pka-blockchain-challenge3#readme",
+  "dependencies": {
+    "dotenv": "^16.4.1",
+    "web3": "^4.4.0"
+  }
+}
