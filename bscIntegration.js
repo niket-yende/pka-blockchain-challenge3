@@ -9,6 +9,7 @@ console.log(`contractAddress: ${contractAddress}`);
 const contractABI = JSON.parse(process.env.CONTRACT_ABI);
 
 const privateKey = process.env.BSC_PRIVATE_KEY;
+const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 async function interactWithContract() {
   const web3 = new Web3(bscNetworkEndpoint);
@@ -22,13 +23,28 @@ async function interactWithContract() {
   const contract = new web3.eth.Contract(contractABI, contractAddress);
 
   // Query the current total supply
-  const totalSupply = await contract.methods.totalSupply().call();
-  console.log('Current Total Supply:', totalSupply);
+  const initialTotalSupply = await contract.methods.totalSupply().call();
+  console.log(`Current Total Supply: ${initialTotalSupply}`);
 
   // Mint new tokens to a specific address
-  const recipientAddress = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B';
-  const mintAmount = 1000;
+  const recipientAddress = process.env.RECIPIENT_ADDRESS;
+  const isValid = web3.utils.isAddress(recipientAddress);
+  console.log(`isValid recipient address: ${isValid}`);
 
+  const isZeroAddress = !recipientAddress.localeCompare(ZERO_ADDRESS);
+  console.log(`isZeroAddress: ${isZeroAddress}`);
+
+  // Check if the address is invalid or a zero address
+  if(!isValid || isZeroAddress) {
+    throw new Error('Please provide valid recipient address');
+  }
+
+  // Minimum 1 token must be minted
+  const mintAmount = process.env.MINT_AMOUNT;
+  if(mintAmount < 1) {
+    throw new Error('Mint amount must be greater than 0');
+  }
+  
   const txReceipt = await contract.methods.mint(recipientAddress, mintAmount).send({ from: account.address, gasLimit: '300000', gasPrice: '10000000000' });
   console.log('Tx hash:', txReceipt.transactionHash);
   console.log(`Minted ${mintAmount} tokens to address ${recipientAddress}`);
@@ -36,6 +52,14 @@ async function interactWithContract() {
   // Query the updated total supply
   const updatedTotalSupply = await contract.methods.totalSupply().call();
   console.log('Updated Total Supply:', updatedTotalSupply);
+
+  const deltaTotalSupply = updatedTotalSupply - initialTotalSupply;
+  console.log(`deltaTotalSupply: ${deltaTotalSupply}`);
+  if(deltaTotalSupply == mintAmount) {
+    console.log(`Total supply increased by ${mintAmount} tokens`);
+  } else {
+    throw new Error('Total supply amount mismatched!');
+  }
 }
 
 interactWithContract().catch(console.error);
