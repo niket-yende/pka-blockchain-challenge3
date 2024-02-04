@@ -11,6 +11,9 @@ const contractABI = JSON.parse(process.env.CONTRACT_ABI);
 const privateKey = process.env.BSC_PRIVATE_KEY;
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
+/**
+ * Function to check totalSupply before and after mint process.
+ */
 async function interactWithContract() {
   const web3 = new Web3(bscNetworkEndpoint);
   console.log('Connected to the provider');
