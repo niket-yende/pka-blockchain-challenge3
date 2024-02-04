@@ -1,8 +1,8 @@
 const Web3 = require('web3');
 require('dotenv').config();
 
-// BSC network endpoint
-const bscNetworkEndpoint = process.env.BSC_NETWORK_ENDPOINT;
+// BSC testnet endpoint
+const bscNetworkEndpoint = process.env.BSC_TESTNET_ENDPOINT;
 console.log(`bscNetworkEndpoint: ${bscNetworkEndpoint}`);
 const contractAddress = process.env.CONTRACT_ADDRESS;
 console.log(`contractAddress: ${contractAddress}`);
@@ -12,6 +12,7 @@ const privateKey = process.env.BSC_PRIVATE_KEY;
 
 async function interactWithContract() {
   const web3 = new Web3(bscNetworkEndpoint);
+  console.log('Connected to the provider');
 
   // Set the account using the private key
   const account = web3.eth.accounts.privateKeyToAccount(privateKey);
@@ -28,8 +29,8 @@ async function interactWithContract() {
   const recipientAddress = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B';
   const mintAmount = 1000;
 
-  await contract.methods.mint(recipientAddress, mintAmount).send({ from: account.address });
-
+  const txReceipt = await contract.methods.mint(recipientAddress, mintAmount).send({ from: account.address, gasLimit: '300000', gasPrice: '10000000000' });
+  console.log('Tx hash:', txReceipt.transactionHash);
   console.log(`Minted ${mintAmount} tokens to address ${recipientAddress}`);
 
   // Query the updated total supply
