@@ -62,3 +62,6 @@ $ node bscIntegration
 ```shell
 https://testnet.bscscan.com/tx/0x09de7ea52e46e2740423a3ea01e44433365535112cd78e88ed215211975c9bdd
 ```
+
+### Output screenshot
+![Screenshot 2024-02-04 163234](https://github.com/niket-yende/pka-blockchain-challenge3/assets/6910493/f138d5cb-a158-4c83-ac1b-d2bdbe40b37c)
